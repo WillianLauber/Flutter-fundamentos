@@ -11,9 +11,15 @@ class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: ListaTransferencias(),
-      ),
+      theme: ThemeData(
+        primaryColor: Colors.blue[200],
+      accentColor: Colors.lightBlueAccent,
+        buttonTheme: ButtonThemeData(
+        buttonColor: Colors.blueAccent,
+          textTheme: ButtonTextTheme.primary
+        )),
+      home:  ListaTransferencias(),
+
     );
   }
 }
@@ -113,13 +119,14 @@ class ItemTransferencia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Card(
+    return Scaffold(
+        body: Card(
       child: ListTile(
         leading: Icon(Icons.monetization_on),
         title: Text(_transferencia.valor.toString()),
         subtitle: Text(_transferencia.numeroConta.toString()),
       ),
-    );
+    ));
   }
 }
 
