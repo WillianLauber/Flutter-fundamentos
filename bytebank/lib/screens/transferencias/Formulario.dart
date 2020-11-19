@@ -1,4 +1,3 @@
-
 import 'package:bytebank/components/Editor.dart';
 import 'package:bytebank/models/Transferencia.dart';
 import 'package:flutter/material.dart';
@@ -9,16 +8,15 @@ const _valor = 'valor';
 const _tconfirmar = 'confirmar';
 
 class FormularioTransferencia extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return TransferenciaState();
-  }}
+  }
+}
 
-class TransferenciaState extends State<FormularioTransferencia>{
-
+class TransferenciaState extends State<FormularioTransferencia> {
   final TextEditingController _controladorCampoNumeroConta =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
@@ -51,6 +49,6 @@ class TransferenciaState extends State<FormularioTransferencia>{
     if (valor != null && numeroConta != null) {
       final transferenciaCriada = Transferencia(numeroConta, valor);
       Navigator.pop(context, transferenciaCriada);
-
-    }}
+    }
+  }
 }
