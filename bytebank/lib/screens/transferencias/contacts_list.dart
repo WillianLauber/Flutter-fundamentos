@@ -1,6 +1,10 @@
+import 'package:bytebank/database/app_database.dart';
+import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/transferencias/contact_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+final List<Contact> contacts = List();
 
 class ContactsList extends StatelessWidget {
   @override
@@ -9,15 +13,18 @@ class ContactsList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Contacts'),
       ),
-      body: ListView(
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              title: Text('Alex'),
-              subtitle: Text('1000'),
-            ),
-          )
-        ],
+      body: FutureBuilder(
+        future: findAll(),
+        builder: (context, snapshot) {
+          final List<Contact> contacts = snapshot.data;
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              final Contact contact = contacts[index];
+              return _ContactItem(contact);
+            },
+            itemCount: contacts.length,
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -25,6 +32,22 @@ class ContactsList extends StatelessWidget {
               .push(MaterialPageRoute(builder: (context) => ContactForm()));
         },
         child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class _ContactItem extends StatelessWidget {
+  final Contact contact;
+
+  _ContactItem(this.contact);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(contact.name),
+        subtitle: Text(contact.accountNumber.toString()),
       ),
     );
   }

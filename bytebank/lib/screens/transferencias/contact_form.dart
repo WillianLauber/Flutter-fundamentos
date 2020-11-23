@@ -32,7 +32,7 @@ class _ContactFormState extends State<ContactForm> {
               padding: const EdgeInsets.only(top: 8.0),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Account name',
+                  labelText: 'Account number',
 
                 ),
                 style: TextStyle(
