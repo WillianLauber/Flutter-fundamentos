@@ -1,8 +1,13 @@
-class account {
-  String _accountName;
-  int _accountNumber
+class Contact {
+  final int id;
+  final String name;
+  final int accountNumber;
+
+
+  Contact(this.id, this.name, this.accountNumber);
+
   @override
-  Widget build(BuildContext context) {
-    return Container();
+  String toString() {
+    return 'Contact{name: $name, accountNumber: $accountNumber}';
   }
 }
