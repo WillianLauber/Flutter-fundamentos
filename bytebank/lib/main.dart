@@ -19,7 +19,7 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            primaryColor: Colors.blue[200],
+            primaryColor: Colors.lightBlue[600],
             accentColor: Colors.lightBlueAccent,
             buttonTheme: ButtonThemeData(
                 buttonColor: Colors.blueAccent,
