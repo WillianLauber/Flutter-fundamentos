@@ -8,7 +8,13 @@ final List<Contact> contacts = List();
 
 final ContactDao _dao = ContactDao();
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
+
+  @override
+  _ContactListState createState() => _ContactListState();
+}
+
+class _ContactListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +40,7 @@ class ContactsList extends StatelessWidget {
                 ),
               );
               break;
-            case ConnectionState
-                .active: //quando está com 50% dos dados carregados, as vezes faz sentido já mostarr, no nosso caso não
+            case ConnectionState.active:
               break;
             case ConnectionState.done:
               final List<Contact> contacts = snapshot.data;
@@ -61,7 +66,6 @@ class ContactsList extends StatelessWidget {
     );
   }
 }
-
 class _ContactItem extends StatelessWidget {
   final Contact contact;
 

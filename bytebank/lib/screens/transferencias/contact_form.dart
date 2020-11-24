@@ -1,7 +1,7 @@
 import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
+import 'package:bytebank/screens/transferencias/contacts_list.dart';
 import 'package:flutter/material.dart';
-
 
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _accountNumberController = TextEditingController();
@@ -25,19 +25,16 @@ class _ContactFormState extends State<ContactForm> {
             TextField(
                 decoration: InputDecoration(
                   labelText: 'Full name',
-
                 ),
+                controller: _nameController,
                 style: TextStyle(
                   fontSize: 24.0,
-                )
-            ),
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Account number',
-
-                ),
+                decoration: InputDecoration(labelText: 'Account number'),
+                controller: _accountNumberController,
                 style: TextStyle(
                   fontSize: 24.0,
                 ),
@@ -47,20 +44,22 @@ class _ContactFormState extends State<ContactForm> {
               padding: const EdgeInsets.only(top: 16.0),
               child: SizedBox(
                 width: double.maxFinite,
-                child: RaisedButton(child: Text('Create'),
+                child: RaisedButton(
+                    child: Text('Create'),
                     onPressed: () {
                       final String name = _nameController.text;
-                      final int number = int.tryParse(
-                          _accountNumberController.text);
+                      final int number =
+                          int.tryParse(_accountNumberController.text);
                       final contact = new Contact(0, name, number);
-                      _dao.save(contact).then((id) =>
-                          Navigator.pop(context));
+                      _dao.save(contact).then((id) => Navigator.of(context)
+                          .pop(MaterialPageRoute(
+                              builder: (context) => ContactsList())));
                     }),
               ),
             )
           ],
-        ),)
-      ,
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:bytebank/models/contact.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../app_database.dart';
-import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite/sqflite.dart';
 
 
 class ContactDao {
@@ -16,25 +17,23 @@ class ContactDao {
       '$_account_number INTEGER)';
 
   Future<int> save(Contact contact) async {
-    final db = await createDatabase();
-    return _toMap(contact, db);
-  }
-
-  Future<int> _toMap(Contact contact, Database db) {
-    final Map<String, dynamic> contactMap = Map();
-    contactMap[_id] = contact.id;
-    contactMap[_name] = contact.name;
-    contactMap[_account_number] = contact.accountNumber;
+    final Database db = await createDatabase();
+    Map<String, dynamic> contactMap = _toMap(contact);
     return db.insert(_tableName, contactMap);
   }
 
-  Future<List<Contact>> findAll() {
-    return createDatabase().then((db) =>
-        db.query(_tableName).then((maps) {
-          return _toList(maps);
-        }
-        )
-    );
+  Map<String, dynamic> _toMap(Contact contact) {
+    final Map<String, dynamic> contactMap = Map();
+    contactMap[_name] = contact.name;
+    contactMap[_account_number] = contact.accountNumber;
+    return contactMap;
+  }
+
+  Future<List<Contact>> findAll() async{
+    final Database db = await createDatabase();
+    final List<Map<String, dynamic>> result = await db.query(_tableName);
+    List<Contact> contacts = _toList(result);
+    return contacts;
   }
 
   List<Contact> _toList(List<Map<String, dynamic>> maps) {
@@ -46,6 +45,7 @@ class ContactDao {
           map[_name],
           map[_account_number]);
       contacts.add(contact);
+      debugPrint(contact.toString());
     }
     return contacts;
   }
