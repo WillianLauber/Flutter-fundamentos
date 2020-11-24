@@ -1,4 +1,3 @@
-import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/transferencias/contact_form.dart';

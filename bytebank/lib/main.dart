@@ -1,10 +1,8 @@
-import 'package:bytebank/screens/transferencias/Lista.dart';
 import 'package:bytebank/screens/transferencias/contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'database/dao/contacts.dart';
-import 'models/contact.dart';
 
 
 final ContactDao _dao = ContactDao();
