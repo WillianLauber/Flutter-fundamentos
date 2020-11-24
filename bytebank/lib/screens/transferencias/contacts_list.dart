@@ -1,10 +1,13 @@
 import 'package:bytebank/database/app_database.dart';
+import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/transferencias/contact_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 final List<Contact> contacts = List();
+
+final ContactDao _dao = ContactDao();
 
 class ContactsList extends StatelessWidget {
   @override
@@ -15,7 +18,7 @@ class ContactsList extends StatelessWidget {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future:  findAll(),
+        future:  _dao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:

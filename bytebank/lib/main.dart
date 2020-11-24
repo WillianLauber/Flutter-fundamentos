@@ -3,14 +3,16 @@ import 'package:bytebank/screens/transferencias/contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'database/app_database.dart';
+import 'database/dao/contacts.dart';
 import 'models/contact.dart';
+
+
+final ContactDao _dao = ContactDao();
 
 void main() {
   runApp(BytebankApp());
 
-  save(Contact(0, 'Afran', 2203));
-  findAll().then((contacts) => debugPrint(contacts.toString()));
+  _dao.findAll().then((contacts) => debugPrint(contacts.toString()));
   //runApp(  MyApp());
 }
 
