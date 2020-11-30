@@ -1,6 +1,6 @@
 import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
-import 'package:bytebank/screens/transferencias/contacts_list.dart';
+import 'package:bytebank/screens/contacts/contacts_list.dart';
 import 'package:flutter/material.dart';
 
 final TextEditingController _nameController = TextEditingController();
