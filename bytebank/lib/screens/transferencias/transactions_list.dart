@@ -1,10 +1,10 @@
-import 'package:bytebank/models/Transferencia.dart';
+import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
-import 'Formulario.dart';
+import 'transactions_form.dart';
 
 class ItemTransferencia extends StatelessWidget {
-  final Transferencia _transferencia;
+  final Transaction _transferencia;
 
   ItemTransferencia(this._transferencia);
 
@@ -13,10 +13,14 @@ class ItemTransferencia extends StatelessWidget {
     // TODO: implement build
     return Card(
         child: ListTile(
-      leading: Icon(Icons.monetization_on),
-      title: Text(_transferencia.valor.toString()),
-      subtitle: Text(_transferencia.numeroConta.toString()),
-    ));
+        leading: Icon(Icons.monetization_on),
+    title: Text(_transferencia.valor.toString()),
+    subtitle: Text(
+    _transferencia.contact.accountNumber.toString(),
+    style: TextStyle(
+    fontSize: 16.0,
+    ),
+    )));
   }
 }
 
@@ -36,20 +40,11 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
             final transferencia = widget._transferencias[indice];
             return ItemTransferencia(transferencia);
           }),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return FormularioTransferencia();
-          })).then(
-            (transferenciaRecebida) => _atualiza(transferenciaRecebida),
-          );
-        },
-      ),
+
     );
   }
 
-  void _atualiza(Transferencia transferenciaRecebida) {
+  void _atualiza(Transaction transferenciaRecebida) {
     if (transferenciaRecebida != null) {
       setState(() {
         widget._transferencias.add(transferenciaRecebida);
@@ -60,7 +55,7 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
 
 class ListaTransferencias extends StatefulWidget {
   //objetos que não mudam o valor deixa no stateful, caso do _transferencias, acessar por widget, se fosse um objeto para modificar moveriamos para o State(ListasTransferencaisState
-  final List<Transferencia> _transferencias = List();
+  final List<Transaction> _transferencias = List();
 
   @override
   State<StatefulWidget> createState() {

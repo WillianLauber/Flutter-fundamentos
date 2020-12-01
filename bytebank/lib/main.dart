@@ -1,6 +1,6 @@
 import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/screens/contacts/contacts_list.dart';
-import 'package:bytebank/screens/transferencias/Lista.dart';
+import 'package:bytebank/screens/transferencias/transactions_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,7 +10,7 @@ final ContactDao _dao = ContactDao();
 
 void main() {
   runApp(BytebankApp());
-  findAll();
+  findAll().then((transactions) => print('New transactions: $transactions'));
   _dao.findAll().then((contacts) => debugPrint(contacts.toString()));
   //runApp(  MyApp());
 }

@@ -1,5 +1,6 @@
 import 'package:bytebank/components/Editor.dart';
-import 'package:bytebank/models/Transferencia.dart';
+import 'package:bytebank/models/contact.dart';
+import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 const _tituloAppBar = 'Criando transferência';
@@ -8,6 +9,10 @@ const _valor = 'valor';
 const _tconfirmar = 'confirmar';
 
 class FormularioTransferencia extends StatefulWidget {
+
+  final Contact contact;
+  FormularioTransferencia(this.contact);
+
   @override
   State<StatefulWidget> createState() {
     return TransferenciaState();
@@ -15,6 +20,7 @@ class FormularioTransferencia extends StatefulWidget {
 }
 
 class TransferenciaState extends State<FormularioTransferencia> {
+
   final TextEditingController _controladorCampoNumeroConta =
       TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
@@ -26,10 +32,31 @@ class TransferenciaState extends State<FormularioTransferencia> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Editor(
-                  controlador: _controladorCampoNumeroConta,
-                  rotulo: _nConta,
-                  dica: '0000'),
+              Text(
+                widget.contact.name,
+                style: TextStyle(
+                  fontSize: 24.0,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  widget.contact.accountNumber.toString(),
+                  style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: TextField(
+                  controller: _controladorCampoValor,
+                  style: TextStyle(fontSize: 24.0),
+                  decoration: InputDecoration(labelText: 'Value'),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                ),
+              ),
               Editor(
                   controlador: _controladorCampoValor,
                   rotulo: _valor,
@@ -47,7 +74,7 @@ class TransferenciaState extends State<FormularioTransferencia> {
     final int numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
     final double valor = double.tryParse(_controladorCampoValor.text);
     if (valor != null && numeroConta != null) {
-      final transferenciaCriada = Transferencia(numeroConta, valor);
+      final transferenciaCriada = Transaction(valor, widget.contact);
       Navigator.pop(context, transferenciaCriada);
     }
   }
