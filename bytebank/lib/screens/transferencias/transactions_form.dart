@@ -1,4 +1,5 @@
 import 'package:bytebank/components/editor.dart';
+import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,8 @@ const _valor = 'valor';
 const _tconfirmar = 'confirmar';
 
 class FormularioTransferencia extends StatefulWidget {
-
   final Contact contact;
+
   FormularioTransferencia(this.contact);
 
   @override
@@ -20,9 +21,6 @@ class FormularioTransferencia extends StatefulWidget {
 }
 
 class TransferenciaState extends State<FormularioTransferencia> {
-
-  final TextEditingController _controladorCampoNumeroConta =
-      TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
@@ -57,25 +55,31 @@ class TransferenciaState extends State<FormularioTransferencia> {
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
-              Editor(
-                  controlador: _controladorCampoValor,
-                  rotulo: _valor,
-                  dica: '100.93',
-                  icone: Icons.monetization_on),
+              // Editor(
+              //     controlador: _controladorCampoValor,
+              //     rotulo: _valor,
+              //     dica: '100.93',
+              //     icone: Icons.monetization_on),
               RaisedButton(
                   child: Text(_tconfirmar),
-                  onPressed: () => _criarTransferencia(context))
+                  onPressed: () {
+                    _criarTransferencia(context);
+                  })
             ],
           ),
         ));
   }
 
   void _criarTransferencia(BuildContext context) {
-    final int numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
     final double valor = double.tryParse(_controladorCampoValor.text);
-    if (valor != null && numeroConta != null) {
+
+    debugPrint('transação, valor: ' + valor.toString());
+    if (valor != null) {
       final transferenciaCriada = Transaction(valor, widget.contact);
-      Navigator.pop(context, transferenciaCriada);
+      save(transferenciaCriada).then((transactionReceived) {
+        if (transactionReceived != null)
+          Navigator.pop(context);
+      });
     }
   }
 }

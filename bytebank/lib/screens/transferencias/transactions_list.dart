@@ -25,7 +25,7 @@ class ItemTransferencia extends StatelessWidget {
   }
 }
 
-class ListaTransferenciasState extends State<ListaTransferencias> {
+class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,12 +46,13 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
                 case ConnectionState.active:
                   break;
                 case ConnectionState.done:
-                  if(snapshot.hasData) {
+                  if (snapshot.hasData) {
                     final List<Transaction> transactions = snapshot.data;
                     if (transactions.isNotEmpty) {
                       return ListView.builder(
                         itemBuilder: (context, indice) {
-                          final transferencia = widget._transferencias[indice];
+                          final Transaction transferencia =
+                              transactions[indice];
                           print(transferencia);
                           return Card(
                             child: ListTile(
@@ -75,7 +76,8 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
                         itemCount: transactions.length,
                       );
                     }
-                  }return CenteredMessage(
+                  }
+                  return CenteredMessage(
                     'No transactions found',
                     icon: Icons.warning,
                   );
@@ -84,22 +86,3 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
               return Text('Unknown error');
             }));
   }
-
-  void _atualiza(Transaction transferenciaRecebida) {
-    if (transferenciaRecebida != null) {
-      setState(() {
-        widget._transferencias.add(transferenciaRecebida);
-      });
-    }
-  }
-}
-
-class ListaTransferencias extends StatefulWidget {
-  //objetos que não mudam o valor deixa no stateful, caso do _transferencias, acessar por widget, se fosse um objeto para modificar moveriamos para o State(ListasTransferencaisState
-  final List<Transaction> _transferencias = List();
-
-  @override
-  State<StatefulWidget> createState() {
-    return ListaTransferenciasState();
-  }
-}

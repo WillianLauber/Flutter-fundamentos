@@ -59,7 +59,7 @@ class DashBoard extends StatelessWidget {
                   return ContactsList();
                 }),
                 _FeatureItem("Transaction feed", Icons.monetization_on, onClick: () {
-                  return ListaTransferencias();
+                  return TransactionList();
                 }),
                 _FeatureItem("Transaction feed", Icons.monetization_on, onClick: () {
                   return ContactsList();
@@ -94,7 +94,7 @@ class _FeatureItem extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               color: Theme.of(context).primaryColor,
               width: 150,
-              height: 100,
+              height: 120,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
