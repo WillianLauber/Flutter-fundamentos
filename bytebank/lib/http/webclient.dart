@@ -32,7 +32,7 @@ class LoggingInterceptor implements InterceptorContract {
 
 Future<List<Transaction>> findAll() async{
  final Client client = HttpClientWithInterceptor.build(interceptors: [LoggingInterceptor()]);
- final Response response = await client.get('localhost:8080/transactions', headers: {'password': '10000' });
+ final Response response = await client.get('172.20.33.12:8080/transactions');
  final List<dynamic> decodedJson = jsonDecode(response.body);
  final List<Transaction> transactions = List();
  for(Map<String, dynamic> transactionJson in decodedJson){

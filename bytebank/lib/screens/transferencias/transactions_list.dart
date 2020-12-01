@@ -1,7 +1,7 @@
+import 'package:bytebank/components/progress.dart';
+import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
-
-import 'transactions_form.dart';
 
 class ItemTransferencia extends StatelessWidget {
   final Transaction _transferencia;
@@ -13,34 +13,71 @@ class ItemTransferencia extends StatelessWidget {
     // TODO: implement build
     return Card(
         child: ListTile(
-        leading: Icon(Icons.monetization_on),
-    title: Text(_transferencia.valor.toString()),
-    subtitle: Text(
-    _transferencia.contact.accountNumber.toString(),
-    style: TextStyle(
-    fontSize: 16.0,
-    ),
-    )));
+            leading: Icon(Icons.monetization_on),
+            title: Text(_transferencia.value.toString()),
+            subtitle: Text(
+              _transferencia.contact.accountNumber.toString(),
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            )));
   }
 }
 
 class ListaTransferenciasState extends State<ListaTransferencias> {
   @override
   Widget build(BuildContext context) {
-    //sempre executado quando muda de tela, faz atualização...
-
-    //uso do widget comentado na classe ListaTransferencias
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transferências'),
+        title: Text('Transactions'),
       ),
-      body: ListView.builder(
-          itemCount: widget._transferencias.length,
-          itemBuilder: (context, indice) {
-            final transferencia = widget._transferencias[indice];
-            return ItemTransferencia(transferencia);
-          }),
+      body: FutureBuilder<List<Transaction>>(
+          initialData: List(),
+          future:
+              Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                break;
+              case ConnectionState.waiting:
+                return Progress();
+                break;
+              case ConnectionState.active:
+                break;
+              case ConnectionState.done:
+                final List<Transaction> transactions = snapshot.data;
+                if (transactions.isNotEmpty) {
+                  return ListView.builder(
+                    itemBuilder: (context, indice) {
+                      final transferencia = widget._transferencias[indice];
+                      print(transferencia);
+                      return Card(
+                        child: ListTile(
+                          leading: Icon(Icons.monetization_on),
+                          title: Text(
+                            transferencia.value.toString(),
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            transferencia.contact.accountNumber.toString(),
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: transactions.length,
+                  );
 
+                }
+                break;
+            }
+            return Text('Unknown error');
+          }),
     );
   }
 
