@@ -1,3 +1,4 @@
+import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/screens/contacts/contacts_list.dart';
 import 'package:bytebank/screens/transferencias/Lista.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ final ContactDao _dao = ContactDao();
 
 void main() {
   runApp(BytebankApp());
-
+  findAll();
   _dao.findAll().then((contacts) => debugPrint(contacts.toString()));
   //runApp(  MyApp());
 }
