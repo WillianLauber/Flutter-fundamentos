@@ -1,3 +1,4 @@
+import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
@@ -10,7 +11,6 @@ final List<Contact> contacts = List();
 final ContactDao _dao = ContactDao();
 
 class ContactsList extends StatefulWidget {
-
   @override
   _ContactListState createState() => _ContactListState();
 }
@@ -24,7 +24,7 @@ class _ContactListState extends State<ContactsList> {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future:  _dao.findAll(),
+        future: _dao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -36,16 +36,21 @@ class _ContactListState extends State<ContactsList> {
               break;
             case ConnectionState.done:
               final List<Contact> contacts = snapshot.data;
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final Contact contact = contacts[index];
-                  return _ContactItem(contact);
-                },
-                itemCount: contacts.length,
-              );
+              if(snapshot.hasData) {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final Contact contact = contacts[index];
+                    return _ContactItem(contact);
+                  },
+                  itemCount: contacts.length,
+                );
+              }
               break;
           }
-          return Text('Unknown error');
+          return CenteredMessage(
+            'No contacts found',
+            icon: Icons.warning,
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -58,6 +63,7 @@ class _ContactListState extends State<ContactsList> {
     );
   }
 }
+
 class _ContactItem extends StatelessWidget {
   final Contact contact;
 
