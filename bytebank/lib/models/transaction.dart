@@ -6,10 +6,14 @@ class Transaction {
   final Contact contact;
   Transaction(this.value, this.contact);
 
+  Map<String, dynamic> toJson() =>{
+    'value': value,
+    'conact': contact.toJson(),
+  };
+
   Transaction.fromJson(Map<String, dynamic> json) :
         value  = json['value'],
         contact = Contact.fromJson(json['contact']);
-
 
 
   @override
