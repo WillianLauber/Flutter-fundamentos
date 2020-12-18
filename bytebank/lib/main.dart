@@ -1,13 +1,9 @@
-import 'package:bytebank/http/webclient.dart';
-import 'package:bytebank/models/contact.dart';
-import 'package:bytebank/models/transaction.dart';
 import 'package:bytebank/screens/contacts/contacts_list.dart';
 import 'package:bytebank/screens/transferencias/transactions_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'database/dao/contacts.dart';
-
 
 final ContactDao _dao = ContactDao();
 
@@ -58,10 +54,12 @@ class DashBoard extends StatelessWidget {
                 _FeatureItem("Transfer", Icons.monetization_on, onClick: () {
                   return ContactsList();
                 }),
-                _FeatureItem("Transaction feed", Icons.monetization_on, onClick: () {
+                _FeatureItem("Transaction feed", Icons.monetization_on,
+                    onClick: () {
                   return TransactionList();
                 }),
-                _FeatureItem("Transaction feed", Icons.monetization_on, onClick: () {
+                _FeatureItem("Transaction feed", Icons.monetization_on,
+                    onClick: () {
                   return ContactsList();
                 }),
               ],

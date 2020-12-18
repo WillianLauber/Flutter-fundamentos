@@ -1,26 +1,24 @@
-import 'package:bytebank/components/editor.dart';
-import 'package:bytebank/http/webclient.dart';
+import 'package:bytebank/http/webClients/transaction_webClient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 const _tituloAppBar = 'Criando transferência';
-const _nConta = 'Número da conta';
-const _valor = 'valor';
 const _tconfirmar = 'confirmar';
 
-class FormularioTransferencia extends StatefulWidget {
+class TransactionForm extends StatefulWidget {
   final Contact contact;
 
-  FormularioTransferencia(this.contact);
+  TransactionForm(this.contact);
 
   @override
   State<StatefulWidget> createState() {
-    return TransferenciaState();
+    return TransactionState();
   }
 }
 
-class TransferenciaState extends State<FormularioTransferencia> {
+class TransactionState extends State<TransactionForm> {
+  final TransactionWebClient _webClient = TransactionWebClient();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
@@ -76,9 +74,8 @@ class TransferenciaState extends State<FormularioTransferencia> {
     debugPrint('transação, valor: ' + valor.toString());
     if (valor != null) {
       final transferenciaCriada = Transaction(valor, widget.contact);
-      save(transferenciaCriada).then((transactionReceived) {
-        if (transactionReceived != null)
-          Navigator.pop(context);
+      _webClient.save(transferenciaCriada).then((transactionReceived) {
+        if (transactionReceived != null) Navigator.pop(context);
       });
     }
   }

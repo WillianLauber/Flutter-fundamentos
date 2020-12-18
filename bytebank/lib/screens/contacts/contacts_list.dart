@@ -44,7 +44,7 @@ class _ContactListState extends State<ContactsList> {
                     return _ContactItem(contact, onClick: (){
                       Navigator.of(context).push(
                           MaterialPageRoute(
-                        builder: (context) => FormularioTransferencia(contact),
+                        builder: (context) => TransactionForm(contact),
                         )
                       );}
                     );

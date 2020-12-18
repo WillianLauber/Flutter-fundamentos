@@ -1,12 +1,11 @@
 import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
-import 'package:bytebank/http/webclient.dart';
+import 'package:bytebank/http/webClients/transaction_webClient.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class ItemTransferencia extends StatelessWidget {
   final Transaction _transferencia;
-
   ItemTransferencia(this._transferencia);
 
   @override
@@ -26,6 +25,9 @@ class ItemTransferencia extends StatelessWidget {
 }
 
 class TransactionList extends StatelessWidget {
+
+  final TransactionWebClient _webClient = TransactionWebClient();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class TransactionList extends StatelessWidget {
         body: FutureBuilder<List<Transaction>>(
             initialData: List(),
             future:
-                Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+                Future.delayed(Duration(seconds: 1)).then((value) => _webClient.findAll()),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -86,3 +88,4 @@ class TransactionList extends StatelessWidget {
               return Text('Unknown error');
             }));
   }
+}
