@@ -2,9 +2,9 @@
 import 'package:bytebank/models/contact.dart';
 
 class Transaction {
-  final double value;
+  double value;
   final Contact contact;
-  Transaction(this.value, this.contact);
+  Transaction(this.value, this.contact): assert(value > 0);
 
   Map<String, dynamic> toJson() =>{
     'value': value,

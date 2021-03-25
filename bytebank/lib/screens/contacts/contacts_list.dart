@@ -37,17 +37,19 @@ class _ContactListState extends State<ContactsList> {
               break;
             case ConnectionState.done:
               final List<Contact> contacts = snapshot.data;
-              if(snapshot.hasData) {
+              if (snapshot.hasData) {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final Contact contact = contacts[index];
-                    return _ContactItem(contact, onClick: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute(
-                        builder: (context) => TransactionForm(contact),
-                        )
-                      );}
-                    );
+                    return _ContactItem(contact, onClick: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (context) => ContactForm(),
+                            ),
+                          )
+                          .then((value) => setState(() {}));
+                    });
                   },
                   itemCount: contacts.length,
                 );
@@ -74,6 +76,7 @@ class _ContactListState extends State<ContactsList> {
 class _ContactItem extends StatelessWidget {
   final Contact contact;
   final Function onClick;
+
   _ContactItem(this.contact, {@required this.onClick});
 
   @override
