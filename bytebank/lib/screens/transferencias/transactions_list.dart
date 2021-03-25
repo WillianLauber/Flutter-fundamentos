@@ -35,9 +35,7 @@ class TransactionList extends StatelessWidget {
           title: Text('Transactions'),
         ),
         body: FutureBuilder<List<Transaction>>(
-            initialData: List(),
-            future:
-                Future.delayed(Duration(seconds: 1)).then((value) => _webClient.findAll()),
+            future: _webClient.findAll(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -53,9 +51,7 @@ class TransactionList extends StatelessWidget {
                     if (transactions.isNotEmpty) {
                       return ListView.builder(
                         itemBuilder: (context, indice) {
-                          final Transaction transferencia =
-                              transactions[indice];
-                          print(transferencia);
+                          final Transaction transferencia = transactions[indice];
                           return Card(
                             child: ListTile(
                               leading: Icon(Icons.monetization_on),

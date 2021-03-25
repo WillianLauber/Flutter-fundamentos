@@ -8,7 +8,7 @@ class Transaction {
 
   Map<String, dynamic> toJson() =>{
     'value': value,
-    'conact': contact.toJson(),
+    'contact': contact.toJson(),
   };
 
   Transaction.fromJson(Map<String, dynamic> json) :

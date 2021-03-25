@@ -58,10 +58,7 @@ class DashBoard extends StatelessWidget {
                     onClick: () {
                   return TransactionList();
                 }),
-                _FeatureItem("Transaction feed", Icons.monetization_on,
-                    onClick: () {
-                  return ContactsList();
-                }),
+
               ],
             ),
           ),

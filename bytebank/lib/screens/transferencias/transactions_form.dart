@@ -58,11 +58,22 @@ class TransactionState extends State<TransactionForm> {
               //     rotulo: _valor,
               //     dica: '100.93',
               //     icone: Icons.monetization_on),
-              RaisedButton(
-                  child: Text(_tconfirmar),
-                  onPressed: () {
-                    _criarTransferencia(context);
-                  })
+              Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+    child: SizedBox(
+    width: double.maxFinite,
+    child: RaisedButton(
+    child: Text('Transfer'), onPressed: () {
+      final double value = double.tryParse(_controladorCampoValor.text);
+      final transactionCreated = Transaction(value, widget.contact);
+      _webClient.save(transactionCreated).then((transaction) {
+        if (transaction != null) {
+          Navigator.pop(context);
+        }
+      });
+    })),
+
+              )
             ],
           ),
         ));
