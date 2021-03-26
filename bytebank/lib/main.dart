@@ -44,17 +44,17 @@ class DashBoard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(7.0),
             child: Image.asset('images/bytebank_logo.png'),
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _FeatureItem("Transfer", Icons.monetization_on, onClick: () {
+                FeatureItem("Transfer", Icons.monetization_on, onClick: () {
                   return ContactsList();
                 }),
-                _FeatureItem("Transaction feed", Icons.monetization_on,
+                FeatureItem("Transaction feed", Icons.monetization_on,
                     onClick: () {
                   return TransactionList();
                 }),
@@ -68,12 +68,12 @@ class DashBoard extends StatelessWidget {
   }
 }
 
-class _FeatureItem extends StatelessWidget {
-  final String nome;
-  final IconData icone;
-  final Function onClick;
+class FeatureItem extends StatelessWidget {
+   String nome;
+   IconData icone;
+   Function onClick;
 
-  _FeatureItem(this.nome, this.icone, {@required this.onClick()});
+  FeatureItem(this.nome, this.icone, {@required this.onClick()});
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +86,10 @@ class _FeatureItem extends StatelessWidget {
                 .push(MaterialPageRoute(builder: (context) => onClick()));
           },
           child: Container(
-              padding: EdgeInsets.all(8.0),
+              // padding: EdgeInsets.all(8.0),
               color: Theme.of(context).primaryColor,
-              width: 150,
-              height: 120,
+              width: 200,
+              height: 300,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
