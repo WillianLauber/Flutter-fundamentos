@@ -19,14 +19,40 @@ find.widgetWithText para buscar o texto da funcionalidade.
 é possível buscarr um widget pelo tipo e validar o seu conteúdo com o find.byWidgetPredicate, uma das vantagens disso é a reutilização do código:
 ```
  final transferFeatureItem = find.byWidgetPredicate((widget) {
-      if(widget is FeatureItem){
-        return (widget.nome == 'Transfer' &&  widget.icone == Icons.monetization_on);
-      }
+   //   if(widget is FeatureItem){
+  //      return (widget.nome == 'Transfer' &&  widget.icone == Icons.monetization_on);
+  //    }
 
-     return false;
+  //   return false;
+  //  });
+    final transferFeatureItem = find.byWidgetPredicate((widget) {
+      return featureMatcher(widget, "Transfer", Icons.monetization_on);
     });
 
 ```
 
-Adicionar scroll no Widget ocupando a tela inteira para não ocasionar overflow quando arrastar a tela para baixo.
+Foi adicionado um scroll no Widget que ocupava a tela inteira para não ocasionar overflow quando a tela é arrastada para baixo.
 
+Durante a execução do teste, houve a dificuldade de identificar a apresentação do formulário de contatos mesmo após executarmos diversas chamadas
+ do pump(). Isso aconteceu pois ele executa micro tarefas, o que não necessariamente resolve todos os problemas pendentes de nosso aplicativo durante o fluxo.
+
+Para resolvê-los, foi utilizada a função pumpAndSettle(), que faz várias chamadas de pump() não haja mais pendências, sejam interações da tela, execuções de Future e assim por diante. 
+ Foi adicionada a biblioteca mockito ao dev_dependencies do arquivo pubspec.yam para realizar a mockagem do objeto do banco de dados. 
+ Objetos mock, ou objetos simulados, são objetos que simulam 
+ o comportamento de objetos reais de forma controlada.
+ No diretório "test", o arquivo mocks.dart é responsável pelos mocks. Nesse documento foi criada uma nova classe
+  MockContactsDao, a partir da extensão extends da classe Mock foi implementada a classe ContactDao.
+ ```
+ class MockContactDao extends Mock implements ContactDao {
+ 0
+ }
+```
+Para realizar o teste de fluxo foi injetada como dependência a classe MockContactDao 
+ ```
+testWidgets('Should save a contact', (tester) async {
+    final mockContactDao = MockContactDao();
+    await tester.pumpWidget(BytebankApp(contactDao: mockContactDao,));
+    final dashboard = find.byType(Dashboard);
+    expect(dashboard, findsOneWidget);
+ ```
+ Desta forma, há uma classe compatível ao ContactDao(), mas cujos comportamentos não serão usados.

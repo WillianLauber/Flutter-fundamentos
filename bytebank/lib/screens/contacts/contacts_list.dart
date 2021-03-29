@@ -9,14 +9,17 @@ import 'package:flutter/widgets.dart';
 
 final List<Contact> contacts = List();
 
-final ContactDao _dao = ContactDao();
 
 class ContactsList extends StatefulWidget {
+  final ContactDao contactDao;
+  ContactsList({@required this.contactDao});
   @override
-  _ContactListState createState() => _ContactListState();
+  _ContactListState createState() => _ContactListState(contactDao: contactDao);
 }
 
 class _ContactListState extends State<ContactsList> {
+  final ContactDao contactDao;
+  _ContactListState({@required this.contactDao});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +28,7 @@ class _ContactListState extends State<ContactsList> {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future: _dao.findAll(),
+        future: contactDao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -45,7 +48,7 @@ class _ContactListState extends State<ContactsList> {
                       Navigator.of(context)
                           .push(
                             MaterialPageRoute(
-                              builder: (context) => ContactForm(),
+                              builder: (context) => ContactForm(contactDao: contactDao),
                             ),
                           )
                           .then((value) => setState(() {}));
@@ -65,7 +68,7 @@ class _ContactListState extends State<ContactsList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ContactForm()));
+              .push(MaterialPageRoute(builder: (context) => ContactForm(contactDao: contactDao,)));
         },
         child: Icon(Icons.add),
       ),

@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _accountNumberController = TextEditingController();
 
-final ContactDao _dao = ContactDao();
 
 class ContactForm extends StatefulWidget {
+  final ContactDao contactDao;
+  ContactForm({@required this.contactDao});
   @override
-  _ContactFormState createState() => _ContactFormState();
+  _ContactFormState createState() => _ContactFormState(contactDao: contactDao);
 }
 
 class _ContactFormState extends State<ContactForm> {
+
+  final ContactDao contactDao;
+  _ContactFormState({@required this.contactDao});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +28,7 @@ class _ContactFormState extends State<ContactForm> {
           children: <Widget>[
             TextField(
                 decoration: InputDecoration(
-                  labelText: 'Full name',
+                    labelText: 'Full name',
                 ),
                 controller: _nameController,
                 style: TextStyle(
@@ -51,9 +55,7 @@ class _ContactFormState extends State<ContactForm> {
                       final int number =
                           int.tryParse(_accountNumberController.text);
                       final contact = new Contact(0, name, number);
-                      _dao.save(contact).then((id) => Navigator.of(context)
-                          .pop(MaterialPageRoute(
-                              builder: (context) => ContactsList())));
+                      _save(contact, context);
                     }),
               ),
             )
@@ -61,5 +63,12 @@ class _ContactFormState extends State<ContactForm> {
         ),
       ),
     );
+  }
+
+  void _save(Contact contact, BuildContext context) async{
+   await contactDao.save(contact);
+    Navigator.of(context)
+        .pop(MaterialPageRoute(
+            builder: (context) => ContactsList()));
   }
 }

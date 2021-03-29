@@ -4,19 +4,24 @@ import 'package:bytebank/http/webClients/transaction_webClient.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
-class ItemTransferencia extends StatelessWidget {
+class ItemTransferencia extends StatefulWidget {
   final Transaction _transferencia;
   ItemTransferencia(this._transferencia);
 
+  @override
+  _ItemTransferenciaState createState() => _ItemTransferenciaState();
+}
+
+class _ItemTransferenciaState extends State<ItemTransferencia> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
         child: ListTile(
             leading: Icon(Icons.monetization_on),
-            title: Text(_transferencia.value.toString()),
+            title: Text(widget._transferencia.value.toString()),
             subtitle: Text(
-              _transferencia.contact.accountNumber.toString(),
+              widget._transferencia.contact.accountNumber.toString(),
               style: TextStyle(
                 fontSize: 16.0,
               ),
