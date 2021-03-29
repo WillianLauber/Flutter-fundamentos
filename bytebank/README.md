@@ -1,16 +1,28 @@
 # bytebank
+Algumas lições aprendidas neste projeto:
 
-A new Flutter project.
+**Padrões de projeto para testes**
 
-## Getting Started
+Nos testes em Flutter devemos quando possível separar os unitários dos testes de widget por padrão há uma pasta com o nome "test"
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+**Os testes trabalham com uma expectativa:**
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Para testes unitários utilizamos test  e a seguinte asserção para validar uma transferencia de 200 reais expect(transaction.value, 200);
+Já para os de widget a função de testes é testWidgets para encontrar a feature transfer foram empregadas as seguintes funções para o Finder:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+find.widgetWithIcon para buscar o ícone da funcionalidade;
+find.widgetWithText para buscar o texto da funcionalidade.
+
+**Buscando widgets com predicate**
+
+é possível buscarr um widget pelo tipo e validar o seu conteúdo com o find.byWidgetPredicate:
+
+ final transferFeatureItem = find.byWidgetPredicate((widget) {
+      if(widget is FeatureItem){
+        return (widget.nome == 'Transfer' &&  widget.icone == Icons.monetization_on);
+      }
+
+      return false;
+    });
+

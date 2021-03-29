@@ -60,7 +60,7 @@ class DashBoard extends StatelessWidget {
                       FeatureItem("Transfer", Icons.monetization_on, onClick: () {
                         return ContactsList();
                       }),
-                      FeatureItem("Transaction feed", Icons.monetization_on,
+                      FeatureItem("Transaction feed", Icons.description,
                           onClick: () {
                         return TransactionList();
                       }),

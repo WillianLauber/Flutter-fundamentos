@@ -8,9 +8,35 @@ void main(){
    final mainImage = find.byType(Image);
    expect(mainImage, findsOneWidget);
   });
-  testWidgets("Should display the first feature when the Dashboard is opened", (tester) async{
+  testWidgets("Should display the transfer feature when the Dashboard is opened", (tester) async{
     await tester.pumpWidget(MaterialApp(home: DashBoard()));
-    final firstFeature = find.byType(FeatureItem);
-    expect(firstFeature, findsWidgets);
+    // final iconTransferFeatureItem = find.widgetWithIcon(FeatureItem, Icons.monetization_on);
+    // expect(iconTransferFeatureItem, findsOneWidget);
+    // final  nameTranferFeatureItem = find.widgetWithText(FeatureItem, "Transfer");
+    // expect(nameTranferFeatureItem, findsOneWidget);
+    final transferFeatureItem = find.byWidgetPredicate((widget) {
+      return featureMatcher(widget, "Transfer", Icons.monetization_on);
+    });
+
   });
+
+  testWidgets("Should display the transfer feature when the Dashboard is opened", (tester) async{
+    await tester.pumpWidget(MaterialApp(home: DashBoard()));
+    // final iconTransactionFeedFeatureItem = find.widgetWithIcon(FeatureItem, Icons.description);
+    // expect(iconTransactionFeedFeatureItem, findsOneWidget);
+    // final  nameTransactionFeedFeatureItem = find.widgetWithText(FeatureItem, "Transaction feed");
+    // expect(nameTransactionFeedFeatureItem, findsOneWidget);
+    final nameTransactionFeedFeatureItem = find.byWidgetPredicate((widget) {
+      return featureMatcher(widget, "Transaction feed", Icons.description);
+    });
+
+  });
+}
+
+bool featureMatcher(Widget widget, nome, icon) {
+   if(widget is FeatureItem){
+    return (widget.nome == nome &&  widget.icone == icon);
+  }
+  
+  return false;
 }
