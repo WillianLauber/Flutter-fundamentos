@@ -26,40 +26,41 @@ class TransactionState extends State<TransactionForm> {
     return Scaffold(
         appBar: AppBar(title: Text(_tituloAppBar)),
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Text(
-                widget.contact.name,
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  widget.contact.accountNumber.toString(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  widget.contact.name,
                   style: TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextField(
-                  controller: _controladorCampoValor,
-                  style: TextStyle(fontSize: 24.0),
-                  decoration: InputDecoration(labelText: 'Value'),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Text(
+                    widget.contact.accountNumber.toString(),
+                    style: TextStyle(
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              // Editor(
-              //     controlador: _controladorCampoValor,
-              //     rotulo: _valor,
-              //     dica: '100.93',
-              //     icone: Icons.monetization_on),
-              Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: TextField(
+                    controller: _controladorCampoValor,
+                    style: TextStyle(fontSize: 24.0),
+                    decoration: InputDecoration(labelText: 'Value'),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  ),
+                ),
+                // Editor(
+                //     controlador: _controladorCampoValor,
+                //     rotulo: _valor,
+                //     dica: '100.93',
+                //     icone: Icons.monetization_on),
+                Padding(
+                padding: const EdgeInsets.only(top: 16.0),
     child: SizedBox(
     width: double.maxFinite,
     child: RaisedButton(
@@ -68,13 +69,14 @@ class TransactionState extends State<TransactionForm> {
       final transactionCreated = Transaction(value, widget.contact);
       _webClient.save(transactionCreated).then((transaction) {
         if (transaction != null) {
-          Navigator.pop(context);
+            Navigator.pop(context);
         }
       });
     })),
 
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ));
   }

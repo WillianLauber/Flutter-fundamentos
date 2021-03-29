@@ -39,30 +39,39 @@ class DashBoard extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text("Dashboard"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                FeatureItem("Transfer", Icons.monetization_on, onClick: () {
-                  return ContactsList();
-                }),
-                FeatureItem("Transaction feed", Icons.monetization_on,
-                    onClick: () {
-                  return TransactionList();
-                }),
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset('images/bytebank_logo.png'),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      FeatureItem("Transfer", Icons.monetization_on, onClick: () {
+                        return ContactsList();
+                      }),
+                      FeatureItem("Transaction feed", Icons.monetization_on,
+                          onClick: () {
+                        return TransactionList();
+                      }),
 
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -86,10 +95,10 @@ class FeatureItem extends StatelessWidget {
                 .push(MaterialPageRoute(builder: (context) => onClick()));
           },
           child: Container(
-              // padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               color: Theme.of(context).primaryColor,
-              width: 200,
-              height: 300,
+              width: 150,
+              height: 150,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
