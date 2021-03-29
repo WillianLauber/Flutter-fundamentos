@@ -44,11 +44,11 @@ class _ContactListState extends State<ContactsList> {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final Contact contact = contacts[index];
-                    return _ContactItem(contact, onClick: () {
+                    return ContactItem(contact, onClick: () {
                       Navigator.of(context)
                           .push(
                             MaterialPageRoute(
-                              builder: (context) => ContactForm(contactDao: contactDao),
+                              builder: (context) => TransactionForm(contact),
                             ),
                           )
                           .then((value) => setState(() {}));
@@ -76,11 +76,11 @@ class _ContactListState extends State<ContactsList> {
   }
 }
 
-class _ContactItem extends StatelessWidget {
+class ContactItem extends StatelessWidget {
   final Contact contact;
   final Function onClick;
 
-  _ContactItem(this.contact, {@required this.onClick});
+  ContactItem(this.contact, {@required this.onClick});
 
   @override
   Widget build(BuildContext context) {

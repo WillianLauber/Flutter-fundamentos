@@ -25,7 +25,7 @@ class BytebankApp extends StatelessWidget {
             buttonTheme: ButtonThemeData(
                 buttonColor: Colors.blueAccent,
                 textTheme: ButtonTextTheme.primary)),
-        home: DashBoard(contactDao: contactDao) //ListaTransferencias(),
+        home: DashBoard(contactDao: contactDao,) //ListaTransferencias(),
 
         );
   }
@@ -80,7 +80,7 @@ class DashBoard extends StatelessWidget {
 
   void _showsContactList(BuildContext context, contactDao) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-        ContactsList(contactDao: contactDao),));
+        ContactsList(contactDao: contactDao)));
   }
 }
 
