@@ -1,10 +1,16 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/http/webClients/transaction_webClient.dart';
+// import 'package:bytebank/components/response_dialog.dart';
+// import 'package:bytebank/components/transaction_auth_dialog.dart';
+import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
-
-const _tituloAppBar = 'Criando transferência';
-const _tconfirmar = 'confirmar';
+// import 'package:uuid/uuid.dart';
 
 class TransactionForm extends StatefulWidget {
   final Contact contact;
@@ -12,84 +18,155 @@ class TransactionForm extends StatefulWidget {
   TransactionForm(this.contact);
 
   @override
-  State<StatefulWidget> createState() {
-    return TransactionState();
-  }
+  _TransactionFormState createState() => _TransactionFormState();
 }
 
-class TransactionState extends State<TransactionForm> {
-  final TransactionWebClient _webClient = TransactionWebClient();
-  final TextEditingController _controladorCampoValor = TextEditingController();
+class _TransactionFormState extends State<TransactionForm> {
+  final TextEditingController _valueController = TextEditingController();
+  // final String transactionId = Uuid().v4();
+  bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = AppDependencies.of(context);
     return Scaffold(
-        appBar: AppBar(title: Text(_tituloAppBar)),
-        body: SingleChildScrollView(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  widget.contact.name,
-                  style: TextStyle(
-                    fontSize: 24.0,
+      appBar: AppBar(
+        title: Text('New transaction'),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(
+                    // message: 'Sending...',
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Text(
-                    widget.contact.accountNumber.toString(),
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                visible: _sending,
+              ),
+              Text(
+                widget.contact.name,
+                style: TextStyle(
+                  fontSize: 24.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: TextField(
-                    controller: _controladorCampoValor,
-                    style: TextStyle(fontSize: 24.0),
-                    decoration: InputDecoration(labelText: 'Value'),
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  ),
-                ),
-                // Editor(
-                //     controlador: _controladorCampoValor,
-                //     rotulo: _valor,
-                //     dica: '100.93',
-                //     icone: Icons.monetization_on),
-                Padding(
+              ),
+              Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-    child: SizedBox(
-    width: double.maxFinite,
-    child: RaisedButton(
-    child: Text('Transfer'), onPressed: () {
-      final double value = double.tryParse(_controladorCampoValor.text);
-      final transactionCreated = Transaction(value, widget.contact);
-      _webClient.save(transactionCreated).then((transaction) {
-        if (transaction != null) {
-            Navigator.pop(context);
-        }
-      });
-    })),
-
-                )
-              ],
-            ),
+                child: Text(
+                  widget.contact.accountNumber.toString(),
+                  style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: TextField(
+                  controller: _valueController,
+                  style: TextStyle(fontSize: 24.0),
+                  decoration: InputDecoration(labelText: 'Value'),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: RaisedButton(
+                    child: Text('Transfer'),
+                    onPressed: () {
+                      final double value =
+                          double.tryParse(_valueController.text);
+                      final transactionCreated = Transaction(
+                        // transactionId,
+                        value,
+                        widget.contact,
+                      );
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            // return TransactionAuthDialog(
+                            //   onConfirm: (String password) {
+                            //     _save(dependencies.transactionWebClient,
+                            //         transactionCreated, password, context);
+                              },
+                            );
+                          // });
+                    },
+                  ),
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  void _criarTransferencia(BuildContext context) {
-    final double valor = double.tryParse(_controladorCampoValor.text);
+  void _save(
+    TransactionWebClient webClient,
+    Transaction transactionCreated,
+    String password,
+    BuildContext context,
+  ) async {
+    Transaction transaction = await _send(
+      webClient,
+      transactionCreated,
+      password,
+      context,
+    );
+    _showSuccessfulMessage(transaction, context);
+  }
 
-    debugPrint('transação, valor: ' + valor.toString());
-    if (valor != null) {
-      final transferenciaCriada = Transaction(valor, widget.contact);
-      _webClient.save(transferenciaCriada).then((transactionReceived) {
-        if (transactionReceived != null) Navigator.pop(context);
-      });
+  Future _showSuccessfulMessage(
+      Transaction transaction, BuildContext context) async {
+    if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            // return SuccessDialog('successful transaction');
+          });
+      Navigator.pop(context);
     }
+  }
+
+  Future<Transaction> _send(
+      TransactionWebClient webClient,
+      Transaction transactionCreated,
+      String password,
+      BuildContext context) async {
+    setState(() {
+      _sending = true;
+    });
+    final Transaction transaction =// ,password
+        await webClient.save(transactionCreated).catchError((e) {
+      _showFailureMessage(context, message: e.message);
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context,
+          message: 'timeout submitting the transaction');
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      _showFailureMessage(context);
+    }).whenComplete(() {
+      setState(() {
+        _sending = false;
+      });
+    });
+    return transaction;
+  }
+
+  void _showFailureMessage(
+    BuildContext context, {
+    String message = 'Unknown error',
+  }) {
+    showDialog(
+        context: context,
+        builder: (contextDialog) {
+          // return FailureDialog(message);
+        });
   }
 }

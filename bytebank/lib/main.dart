@@ -1,5 +1,7 @@
+import 'package:bytebank/http/webClients/transaction_webClient.dart';
 import 'package:bytebank/screens/contacts/contacts_list.dart';
 import 'package:bytebank/screens/transferencias/transactions_list.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,7 +9,7 @@ import 'database/dao/contacts.dart';
 
 
 void main() {
-  runApp(BytebankApp(contactDao: ContactDao()));
+  runApp(BytebankApp(contactDao: ContactDao(), webClient: TransactionWebClient(),));
   // findAll().then((transactions) => print('New transactions: $transactions'));
   // save(Transaction(200.00, Contact(0, 'Roberto Molina', 2000))).then((transaction) => print(transaction));
   //runApp(  MyApp());
@@ -15,25 +17,27 @@ void main() {
 
 class BytebankApp extends StatelessWidget {
   final ContactDao contactDao;
-  BytebankApp({@required this.contactDao});
+  final TransactionWebClient webClient;
+  BytebankApp({@required this.contactDao, @required this.webClient});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(
-            primaryColor: Colors.lightBlue[600],
-            accentColor: Colors.lightBlueAccent,
-            buttonTheme: ButtonThemeData(
-                buttonColor: Colors.blueAccent,
-                textTheme: ButtonTextTheme.primary)),
-        home: DashBoard(contactDao: contactDao,) //ListaTransferencias(),
+    contactDao: contactDao;
+    return AppDependencies(
+      child: MaterialApp(
+          theme: ThemeData(
+              primaryColor: Colors.lightBlue[600],
+              accentColor: Colors.lightBlueAccent,
+              buttonTheme: ButtonThemeData(
+                  buttonColor: Colors.blueAccent,
+                  textTheme: ButtonTextTheme.primary)),
+          home: DashBoard() //ListaTransferencias(),
 
-        );
+          ),
+    );
   }
 }
 
 class DashBoard extends StatelessWidget {
-  final ContactDao contactDao;
-  DashBoard({@required this.contactDao});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +64,7 @@ class DashBoard extends StatelessWidget {
                   child: Row(
                     children: [
                       FeatureItem("Transfer", Icons.monetization_on, onClick: () {
-                        _showsContactList(context, contactDao);
+                        _showsContactList(context);
                       }),
                       FeatureItem("Transaction feed", Icons.description,
                           onClick: () {
@@ -78,9 +82,9 @@ class DashBoard extends StatelessWidget {
     );
   }
 
-  void _showsContactList(BuildContext context, contactDao) {
+  void _showsContactList(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-        ContactsList(contactDao: contactDao)));
+        ContactsList()));
   }
 }
 

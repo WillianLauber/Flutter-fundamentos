@@ -9,3 +9,10 @@ bool featureMatcher(Widget widget, nome, icon) {
 
   return false;
 }
+
+bool textFieldMatcher(Widget widget, String _textFildMatcher) {
+  if (widget is TextField) {
+    return widget.decoration.labelText ==  _textFildMatcher;
+  }
+  return false;
+}

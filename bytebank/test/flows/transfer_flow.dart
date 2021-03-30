@@ -12,15 +12,18 @@ import 'actions.dart';
 
 main(){
   MockContactDao mockContactDao;
+  MockWebClient mockWebClient;
 
   setUp(() async {
     mockContactDao = MockContactDao();
+    mockWebClient = MockWebClient();
   });
 
   testWidgets("Should transfer to a contact", (tester) async{
 
     await tester.pumpWidget(BytebankApp(
       contactDao: mockContactDao,
+      webClient: mockWebClient,
     ));
 
     final dashboard = find.byType(DashBoard);
@@ -52,5 +55,25 @@ main(){
 
     final transactionForm = find.byType(TransactionForm);
     expect(transactionForm, findsOneWidget);
+
+    final contactName = find.text('Alex');
+    expect(contactName, findsOneWidget);
+
+    final accountNumber = find.text('1000');
+    expect(accountNumber, findsOneWidget);
+
+    final textFieldValue = find.byWidgetPredicate((widget) {
+      return textFieldMatcher(widget, 'Value');
+    });
+    expect(textFieldValue, findsOneWidget);
+    await tester.enterText(textFieldValue, '200');
+
+    final transferButton = find.widgetWithText(RaisedButton, 'Transfer');
+    expect(transferButton, findsOneWidget);
+    await tester.tap(transferButton);
+    await tester.pumpAndSettle();
+
+    // final transactionAuthDialog = find.byType(TransactionAuthDialog);
+  // expect(transactionAuthDialog, findsOneWidget);
   });
 }

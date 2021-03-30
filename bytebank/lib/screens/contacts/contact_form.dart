@@ -1,25 +1,25 @@
 import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts/contacts_list.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
-
-final TextEditingController _nameController = TextEditingController();
-final TextEditingController _accountNumberController = TextEditingController();
-
+import 'package:flutter/scheduler.dart';
 
 class ContactForm extends StatefulWidget {
-  final ContactDao contactDao;
-  ContactForm({@required this.contactDao});
+
   @override
-  _ContactFormState createState() => _ContactFormState(contactDao: contactDao);
+  _ContactFormState createState() => _ContactFormState();
 }
 
 class _ContactFormState extends State<ContactForm> {
 
-  final ContactDao contactDao;
-  _ContactFormState({@required this.contactDao});
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _accountNumberController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
+    final dependencies =  AppDependencies.of(context);
     return Scaffold(
       appBar: AppBar(title: Text('New contact')),
       body: Padding(
@@ -55,7 +55,7 @@ class _ContactFormState extends State<ContactForm> {
                       final int number =
                           int.tryParse(_accountNumberController.text);
                       final contact = new Contact(0, name, number);
-                      _save(contact, context);
+                      _save(dependencies.contactDao, contact, context);
                     }),
               ),
             )
@@ -65,7 +65,7 @@ class _ContactFormState extends State<ContactForm> {
     );
   }
 
-  void _save(Contact contact, BuildContext context) async{
+  void _save(ContactDao contactDao, Contact contact, BuildContext context) async{
    await contactDao.save(contact);
     Navigator.of(context)
         .pop(MaterialPageRoute(

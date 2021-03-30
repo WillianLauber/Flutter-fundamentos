@@ -4,6 +4,7 @@ import 'package:bytebank/database/dao/contacts.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts/contact_form.dart';
 import 'package:bytebank/screens/transferencias/transactions_form.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,24 +12,24 @@ final List<Contact> contacts = List();
 
 
 class ContactsList extends StatefulWidget {
-  final ContactDao contactDao;
-  ContactsList({@required this.contactDao});
+
   @override
-  _ContactListState createState() => _ContactListState(contactDao: contactDao);
+  _ContactListState createState() => _ContactListState();
 }
 
 class _ContactListState extends State<ContactsList> {
-  final ContactDao contactDao;
-  _ContactListState({@required this.contactDao});
+
   @override
   Widget build(BuildContext context) {
+
+    final dependencies =  AppDependencies.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future: contactDao.findAll(),
+        future: dependencies.contactDao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -68,7 +69,7 @@ class _ContactListState extends State<ContactsList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ContactForm(contactDao: contactDao,)));
+              .push(MaterialPageRoute(builder: (context) => ContactForm()));
         },
         child: Icon(Icons.add),
       ),

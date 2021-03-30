@@ -82,3 +82,6 @@ Verificar chamadas de métodos de objetos simulados e quantidade de vezes que um
 
  ```
 Gerar código automático do operador == e o hashcode;
+
+Para não precisar fazer a injeção de dependências por toda a arvore de widgetes do app, foi refatorado para que ele consiga pegar o _webClient e o contactDao
+ a partir do InheritedWidget.
