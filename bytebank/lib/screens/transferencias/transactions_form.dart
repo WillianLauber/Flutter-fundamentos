@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bytebank/components/progress.dart';
+import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/http/webClients/transaction_webClient.dart';
+
 // import 'package:bytebank/components/response_dialog.dart';
 // import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/http/webclient.dart';
@@ -23,6 +25,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
+
   // final String transactionId = Uuid().v4();
   bool _sending = false;
 
@@ -43,8 +46,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Progress(
-                    // message: 'Sending...',
-                  ),
+                      // message: 'Sending...',
+                      ),
                 ),
                 visible: _sending,
               ),
@@ -74,33 +77,32 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    child: Text('Transfer'),
-                    onPressed: () {
-                      final double value =
-                          double.tryParse(_valueController.text);
-                      final transactionCreated = Transaction(
-                        // transactionId,
-                        value,
-                        widget.contact,
-                      );
-                      showDialog(
-                          context: context,
-                          builder: (contextDialog) {
-                            // return TransactionAuthDialog(
-                            //   onConfirm: (String password) {
-                            //     _save(dependencies.transactionWebClient,
-                            //         transactionCreated, password, context);
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: SizedBox(
+                      width: double.maxFinite,
+                      child: RaisedButton(
+                          child: Text('Transfer'),
+                          onPressed: () {
+                            final double value =
+                                double.tryParse(_valueController.text);
+                            final transactionCreated = Transaction(
+                              // transactionId,
+                              value,
+                              widget.contact,
+                            );
+                            showDialog(
+                              context: context,
+                              builder: (contextDialog) {
+                                return TransactionAuthDialog(
+                                    onConfirm: (String password) {
+
+                                        _save(dependencies.webClient,
+                                            transactionCreated, password, context);
+                                      },
+                                    );
                               },
                             );
-                          // });
-                    },
-                  ),
-                ),
-              )
+                          })))
             ],
           ),
         ),
@@ -143,7 +145,7 @@ class _TransactionFormState extends State<TransactionForm> {
     setState(() {
       _sending = true;
     });
-    final Transaction transaction =// ,password
+    final Transaction transaction = // ,password
         await webClient.save(transactionCreated).catchError((e) {
       _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {

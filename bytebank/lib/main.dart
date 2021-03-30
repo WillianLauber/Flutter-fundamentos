@@ -21,8 +21,9 @@ class BytebankApp extends StatelessWidget {
   BytebankApp({@required this.contactDao, @required this.webClient});
   @override
   Widget build(BuildContext context) {
-    contactDao: contactDao;
     return AppDependencies(
+      contactDao: contactDao,
+      webClient: webClient,
       child: MaterialApp(
           theme: ThemeData(
               primaryColor: Colors.lightBlue[600],
@@ -64,7 +65,7 @@ class DashBoard extends StatelessWidget {
                   child: Row(
                     children: [
                       FeatureItem("Transfer", Icons.monetization_on, onClick: () {
-                        _showsContactList(context);
+                        return ContactsList();
                       }),
                       FeatureItem("Transaction feed", Icons.description,
                           onClick: () {
@@ -80,11 +81,6 @@ class DashBoard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showsContactList(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-        ContactsList()));
   }
 }
 

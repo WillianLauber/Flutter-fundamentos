@@ -11,25 +11,22 @@ import 'package:flutter/widgets.dart';
 final List<Contact> contacts = List();
 
 
-class ContactsList extends StatefulWidget {
-
+  class ContactsList extends StatefulWidget {
   @override
-  _ContactListState createState() => _ContactListState();
-}
+  _ContactsListState createState() => _ContactsListState();
+  }
 
-class _ContactListState extends State<ContactsList> {
-
+  class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
-
-    final dependencies =  AppDependencies.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Contacts'),
-      ),
-      body: FutureBuilder<List<Contact>>(
-        initialData: List(),
-        future: dependencies.contactDao.findAll(),
+  final dependencies = AppDependencies.of(context);
+  return Scaffold(
+  appBar: AppBar(
+  title: Text('Transfer'),
+  ),
+  body: FutureBuilder<List<Contact>>(
+  initialData: List(),
+  future: dependencies.contactDao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -40,24 +37,18 @@ class _ContactListState extends State<ContactsList> {
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              final List<Contact> contacts = snapshot.data;
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    final Contact contact = contacts[index];
-                    return ContactItem(contact, onClick: () {
-                      Navigator.of(context)
-                          .push(
-                            MaterialPageRoute(
-                              builder: (context) => TransactionForm(contact),
-                            ),
-                          )
-                          .then((value) => setState(() {}));
-                    });
-                  },
-                  itemCount: contacts.length,
+             final List<Contact> contacts = snapshot.data;
+            return ListView.builder(
+            itemBuilder: (context, index) {
+              final Contact contact = contacts[index];
+              return ContactItem(contact, onClick: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => TransactionForm(contact),),
                 );
-              }
+              },);
+              },
+              itemCount: contacts.length,
+            );
               break;
           }
           return CenteredMessage(
