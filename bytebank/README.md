@@ -3,6 +3,9 @@ Algumas lições aprendidas neste projeto:
 
 Capturar erros ao executar o Future;
 Identificar exceptions lançadas no Future;
+Capturar exceptions específicas;
+Capturar múltiplas exceptions;
+Implementar exceptions personalizadas
 Como por exemplo no arquivo [transaction_webClient.dart](https://github.com/WillianLauber/Flutter-fundamentos/blob/main/bytebank/lib/http/webClients/transaction_webClient.dart)
 
 **Padrões de projeto para testes**

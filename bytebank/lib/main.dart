@@ -47,12 +47,13 @@ class DashBoard extends StatelessWidget {
         title: Text("Dashboard"),
       ),
       body: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight
-            ),
-            child: Column(
+        // SingleChildScrollView(
+        //   child: ConstrainedBox(
+        //       constraints: BoxConstraints(
+        //           minHeight: constraints.maxHeight
+        //       ),
+        //       child:
+              builder: (context, constraints) => Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -78,8 +79,8 @@ class DashBoard extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
+      //   ),
+      // ),
     );
   }
 }
