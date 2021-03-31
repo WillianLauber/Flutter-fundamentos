@@ -8,6 +8,11 @@ Capturar múltiplas exceptions;
 Implementar exceptions personalizadas
 Como por exemplo no arquivo [transaction_webClient.dart](https://github.com/WillianLauber/Flutter-fundamentos/blob/main/bytebank/lib/http/webClients/transaction_webClient.dart)
 
+Evitar problema de código HTTP inesperado.
+
+Um coneceito muito interessante que foi aplicado foi o da idempotência, ao se chamar uma função verifica-se se ela já não foi chamada antes, utilizado ao enviar transferências.
+Para isso foi utilizado o UUID, universally unique identifier, um identificador único que pode ser gerado no dart por 4 tipos de algoritmos. Você pode verificá-las [aqui](https://en.wikipedia.org/wiki/Universally_unique_identifier#Versions)
+
 **Padrões de projeto para testes**
 
 Nos testes em Flutter devemos quando possível separar os unitários dos testes de widget por padrão há uma pasta com o nome "test" neste projeto foram utilizadas as seguintes pastas:
