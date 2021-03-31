@@ -44,7 +44,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Progress(
-                      // message: 'Sending...',
+                      message: 'Sending...',
                       ),
                 ),
                 visible: _sending,
