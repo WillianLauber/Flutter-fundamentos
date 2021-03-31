@@ -11,8 +11,15 @@ import '../mocks/mocks.dart';
 import 'actions.dart';
 
 void main() {
+
+  MockContactDao mockContactDao;
+
+  setUp(() async {
+    mockContactDao = MockContactDao();
+  });
+
+
   testWidgets("Should save a contact", (tester) async {
-    final mockContactDao = MockContactDao();
     await tester.pumpWidget(BytebankApp(
       contactDao: mockContactDao,
     ));

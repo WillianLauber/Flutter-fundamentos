@@ -14,9 +14,15 @@ import '../mocks/mocks.dart';
 import 'actions.dart';
 
 main(){
+  MockContactDao mockContactDao;
+  MockWebClient mockTransactionWebClient;
+
+  setUp(() async {
+    mockContactDao = MockContactDao();
+    mockTransactionWebClient = MockWebClient();
+  });
+
   testWidgets('Should transfer to a contact', (tester) async {
-  final mockContactDao = MockContactDao();
-  final mockTransactionWebClient = MockWebClient();
   await tester.pumpWidget(BytebankApp(
     webClient: mockTransactionWebClient,
     contactDao: mockContactDao,
