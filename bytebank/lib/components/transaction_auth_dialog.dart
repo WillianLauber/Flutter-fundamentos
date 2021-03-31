@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TransactionAuthDialog extends StatefulWidget{
+const Key transactionAuthDialogTextFieldPassword =
+    Key("transactionAuthDialogTextFieldPassword");
+
+class TransactionAuthDialog extends StatefulWidget {
   final Function(String password) onConfirm;
 
   TransactionAuthDialog({@required this.onConfirm});
@@ -10,11 +13,13 @@ class TransactionAuthDialog extends StatefulWidget{
 }
 
 class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
-  final TextEditingController _passwordController =  TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Authenticate"),
+      key: transactionAuthDialogTextFieldPassword,
       content: TextField(
         obscureText: true,
         controller: _passwordController,
@@ -25,11 +30,17 @@ class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
         style: TextStyle(fontSize: 64, letterSpacing: 20),
       ),
       actions: <Widget>[
-        TextButton(onPressed: (){print("cancel");}, child: Text("Cancel")),
-        TextButton(onPressed: ()  {
-          widget.onConfirm(_passwordController.text);
-          Navigator.pop(context);
-        }, child: Text("Confirm"))
+        TextButton(
+            onPressed: () {
+              print("cancel");
+            },
+            child: Text("Cancel")),
+        TextButton(
+            onPressed: () {
+              widget.onConfirm(_passwordController.text);
+              Navigator.pop(context);
+            },
+            child: Text("Confirm"))
       ],
     );
   }
