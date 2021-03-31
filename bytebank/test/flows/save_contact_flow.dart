@@ -64,6 +64,6 @@ void main() {
     expect(contactsListback, findsOneWidget);
     //
     // (If you called `verify(...).called(0);`, please instead use `verifyNever(...);`.)
-    // verify(mockContactDao.findAll());
+    // verify(mockContactDao.findAll()).called(1);
   });
 }
